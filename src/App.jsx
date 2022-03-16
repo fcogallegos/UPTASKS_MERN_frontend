@@ -17,8 +17,8 @@ function App() {
           <Route path='/' element={<AuthLayout />} >
               <Route index element={<Login />} />
               <Route path='register' element={<Register />} />
-              <Route path='forget-password' element={<ForgetPassword />} />
-              <Route path='forget-password/:token' element={<NewPassword />} />
+              <Route path='forgot-password' element={<ForgetPassword />} />
+              <Route path='forgot-password/:token' element={<NewPassword />} />
               <Route path='confirm/:token' element={<ConfirmAccount />} />
           </Route>
       </Routes>
