@@ -57,11 +57,11 @@ const Login = () => {
             <Link
                 className="block text-center my-5 text-slate-500 uppercase text-sm"
                 to="/register"
-            >Don't have an account? Subscribe now!</Link>
+            >Don't have an account? <br/> <span className="font-bold">Subscribe now!</span></Link>
 
             <Link
                 className="block text-center font-bold my-5 text-slate-500 uppercase text-sm"
-                to="/forget-password"
+                to="/forgot-password"
             >Forgot my password.</Link>
       </nav>
 
