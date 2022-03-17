@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthLayout from './layouts/AuthLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import ForgetPassword from './pages/ForgetPassword';
+import ForgetPassword from './pages/ForgotPassword';
 import NewPassword from './pages/NewPassword';
 import ConfirmAccount from './pages/ConfirmAccount';
 
