@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 const Register = () => {
   return (
-    <>
+  <>
 
     <h1 
       className="text-sky-600 font-black text-center text-5xl"
