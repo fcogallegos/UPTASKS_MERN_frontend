@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { Link } from "react-router-dom"
 import Alert from '../components/Alert';
@@ -18,6 +19,24 @@ const ForgetPassword = () => {
       });
       return;
     }
+
+    try {
+      //TODO: Mover to an axios customer
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/forget-password`,
+      { email });
+
+      setAlert({
+        msg: data.msg,
+        error: false
+      })
+
+    } catch (error) {
+      setAlert({
+        msg: error.response.data.msg,
+        error: true
+      })
+    }
+
   }
 
   const { msg } = alert;

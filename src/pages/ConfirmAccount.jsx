@@ -14,6 +14,7 @@ const ConfirmAccount = () => {
   useEffect(() => {
     const confirmAccount = async () => {
       try {
+        //TODO: Mover to an axios customer
         const url = `http://localhost:4000/api/users/confirm/${id}`;
         const { data } = await axios.get(url);
 
