@@ -170,7 +170,7 @@ const Register = () => {
 
         <Link
           className="block text-center font-bold my-5 text-slate-500 uppercase text-sm"
-          to="/forgot-password"
+          to="/forget-password"
         >Forgot my password.</Link>
       </nav>
 
