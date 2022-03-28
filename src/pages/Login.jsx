@@ -1,6 +1,28 @@
-import { Link } from "react-router-dom"
+import { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom"
+import Alert from '../components/Alert';
+import clientAxios from '../config/clientAxios';
 
 const Login = () => {
+
+  const [ email, setEmail ] = useState('');
+  const [ password, setPassword ] = useState('');
+  const [ alert, setAlert ] = useState({});
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    if([email, password].includes('')) {
+      setAlert({
+        msg: 'All the fields are required',
+        error: true
+      });
+      return;
+    }
+  }
+
+  const { msg } = alert;
+
   return (
     <>
 
@@ -9,7 +31,12 @@ const Login = () => {
       >Manage your <span className="text-slate-700"> projects </span>
       </h1>
 
-      <form className="my-5 bg-white shadow rounded-lg p-10">
+      { msg && <Alert alert={alert} /> }
+
+      <form 
+          className="my-5 bg-white shadow rounded-lg p-10"
+          onSubmit={handleSubmit}    
+      >
         <div className="my-5">
             
             <label 
@@ -22,6 +49,8 @@ const Login = () => {
               type="email"
               placeholder="Register Email"
               className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+              value={email}
+              onChange={ e => setEmail(e.target.value) }
             />
         
         </div>
@@ -38,6 +67,8 @@ const Login = () => {
               type="password"
               placeholder="Register Password"
               className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+              value={password}
+              onChange={ e => setPassword(e.target.value) }
             />
         
         </div>
