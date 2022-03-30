@@ -7,10 +7,9 @@ import ForgetPassword from './pages/ForgotPassword';
 import NewPassword from './pages/NewPassword';
 import ConfirmAccount from './pages/ConfirmAccount';
 
-import AuthProvider from './context/AuthProvider';
+import { AuthProvider }  from './context/AuthProvider';
 
 function App() {
-
 
   return (
     <BrowserRouter>
