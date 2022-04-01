@@ -11,7 +11,11 @@ const Login = () => {
   const [ password, setPassword ] = useState('');
   const [ alert, setAlert ] = useState({});
 
+
  const { setAuth } = useAuth();
+
+  //console.log(auth);
+  //console.log(loading);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -32,6 +36,7 @@ const Login = () => {
       
       localStorage.setItem('token', data.token);
       setAuth(data);
+      
     } catch (error) {
       setAlert({
         msg: error.response.data.msg,

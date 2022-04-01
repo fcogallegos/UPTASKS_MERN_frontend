@@ -3,15 +3,17 @@ import useAuth from "../hooks/useAuth"
 
 const ProtectedRoute = () => {
 
-    const { auth } = useAuth();
-
-    console.log(auth);
+    const { auth, loading } = useAuth();
+    
+    //console.log(auth._id);
+    
+    if(loading) return 'Loading...';
 
     return (
         <>
-            { auth._id ? 'Authenticated' : <Navigate to="/" /> }
+            { auth._id ? <Outlet /> : <Navigate to="/" /> }
         </>
     )
 }
 
-export default ProtectedRoute
+export default ProtectedRoute;
