@@ -1,5 +1,10 @@
+import useProjects from "../hooks/useProjects"
+
 
 const Projects = () => {
+  
+  const { projects } = useProjects();
+  
   return (
     <>
 
