@@ -6,10 +6,33 @@ const ProjectsContext = createContext();
 
 const ProjectsProvider = ({ children }) => {
 
-    const [ projects, setProjects ] = useState([]);
-    const [ alert, setAlert ] = useState([]);
+    const [projects, setProjects] = useState([]);
+    const [alert, setAlert] = useState([]);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const getProjects = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
+                const config = {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+
+                const { data } = await clientAxios('/projects', config);
+                setProjects(data.projects);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getProjects();
+    }, [])
 
     const showAlert = alert => {
         setAlert(alert);
@@ -22,7 +45,7 @@ const ProjectsProvider = ({ children }) => {
     const submitProject = async project => {
         try {
             const token = localStorage.getItem('token');
-            if(!token) return;
+            if (!token) return;
 
             const config = {
                 headers: {
