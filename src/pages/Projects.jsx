@@ -1,19 +1,23 @@
 import useProjects from "../hooks/useProjects"
-
+import PreviewProject from "../components/PreviewProject";
 
 const Projects = () => {
   
   const { projects } = useProjects();
-  console.log(projects);
+  //console.log(projects);
   return (
     <>
 
       <h1 className="text-4xl font-black">Projects</h1>
 
-      <div className="bg-white shadow mt-10 rounded-lg p-5">
+      <div className="bg-white shadow mt-10 rounded-lg">
           { projects.length  ? 
-                                        <p>Yes there are projects </p> 
-                                      : <p className="text-center text-gray-600 uppercase"> There are not projects yet</p> }
+              projects.map(project => (
+                <PreviewProject  
+                    key={projects._id}
+                    project={project}
+                />
+              )) : <p className="text-center text-gray-600 uppercase p-5"> There are not projects yet</p> }
       </div>
     </>
   )
