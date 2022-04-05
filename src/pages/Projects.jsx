@@ -14,7 +14,7 @@ const Projects = () => {
           { projects.length  ? 
               projects.map(project => (
                 <PreviewProject  
-                    key={projects._id}
+                    key={project._id}
                     project={project}
                 />
               )) : <p className="text-center text-gray-600 uppercase p-5"> There are not projects yet</p> }
