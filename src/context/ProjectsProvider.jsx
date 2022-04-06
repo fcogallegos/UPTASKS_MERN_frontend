@@ -55,9 +55,9 @@ const ProjectsProvider = ({ children }) => {
             }
 
             const { data } = await clientAxios.post('/projects', project, config);
-            //console.log(data);
+            //console.log(data.projectSaved);
 
-            setProjects([...projects, data]);
+            setProjects([...projects, data.projectSaved]);
 
             setAlert({
                 msg: 'Project created successfully',
@@ -73,13 +73,34 @@ const ProjectsProvider = ({ children }) => {
         }
     }
 
+    const getProject = async id => {
+        
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const { data } = await clientAxios.get(`/projects/${id}`, config);
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <ProjectsContext.Provider
             value={{
                 projects,
                 showAlert,
                 alert,
-                submitProject
+                submitProject,
+                getProject
             }}
         >
             {children}
