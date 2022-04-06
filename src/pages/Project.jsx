@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import  useProjects  from '../hooks/useProjects'; 
+import useProjects from '../hooks/useProjects';
 
 
 const Project = () => {
@@ -8,14 +8,22 @@ const Project = () => {
   const params = useParams();
   //console.log(params);
 
-  const { getProject } = useProjects();
+  const { getProject, project, loading } = useProjects();
 
-  useEffect( ()=> {
+  useEffect(() => {
     getProject(params.id);
-  },[]);
+  }, []);
+
+  //console.log(project);
+
+  const { name } = project;
 
   return (
-    <div>Project</div>
+    loading ? <div className='animate-spin'>Loading...</div>: (
+      <div>
+        <h1 className='font-black text-4xl'>{name}</h1>
+      </div>
+    )
   )
 }
 
