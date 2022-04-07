@@ -39,8 +39,9 @@ const FormProject = () => {
         }
 
         //pasar los datos hacia el provider
-        await submitProject({ name, description, deliveryDate, customer });
+        await submitProject({ id, name, description, deliveryDate, customer });
         
+        setId(null);
         setName('');
         setDescription('');
         setDeliveryDate('');
