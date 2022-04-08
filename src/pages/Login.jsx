@@ -14,6 +14,8 @@ const Login = () => {
 
  const { setAuth } = useAuth();
 
+ const navigate = useNavigate();
+
   //console.log(auth);
   //console.log(loading);
 
@@ -37,6 +39,7 @@ const Login = () => {
       localStorage.setItem('token', data.token);
       setAuth(data);
       
+      navigate('/projects');
     } catch (error) {
       setAlert({
         msg: error.response.data.msg,
