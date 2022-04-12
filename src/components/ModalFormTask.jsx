@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { useParams } from 'react-router-dom';
 
 import Alert from './Alert';
 
@@ -11,14 +12,18 @@ const ModalFormularioTarea = () => {
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [dateDelivery, setDateDelivery] = useState('');
     const [priority, setPriority] = useState('');
+    
+    const params = useParams();
+    //console.log(params);
 
     const { modalFormularioTarea, handleModalTask, showAlert, alert, submitTask } = useProjects();
 
     const handleSubmit = e => {
         e.preventDefault();
 
-        if ([name, description, priority].includes('')) {
+        if ([name, description, dateDelivery, priority].includes('')) {
             showAlert({
                 msg: 'All the fields are required',
                 error: true
@@ -26,7 +31,7 @@ const ModalFormularioTarea = () => {
             return;
         }
 
-        submitTask({ name, description, priority });
+        submitTask({ name, description, dateDelivery, priority, project: params.id });
     }
 
     const { msg } = alert;
@@ -121,6 +126,22 @@ const ModalFormularioTarea = () => {
                                                 className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md'
                                                 value={description}
                                                 onChange={e => setDescription(e.target.value)}
+                                            />
+                                        </div>
+
+                                        <div className='mb-5'>
+                                            <label
+                                                className='text-gray-700 uppercase font-bold text-sm'
+                                                htmlFor='date-delivery'
+                                            >
+                                                Date Delivery
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id="date-delivery"
+                                                className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md'
+                                                value={dateDelivery}
+                                                onChange={e => setDateDelivery(e.target.value)}
                                             />
                                         </div>
 
