@@ -1,6 +1,8 @@
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
+import Alert from './Alert';
+
 import useProjects from '../hooks/useProjects'
 
 const PRIORITY = ['Slow', 'Medium', 'Hight'];
@@ -11,7 +13,23 @@ const ModalFormularioTarea = () => {
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('');
 
-    const { modalFormularioTarea, handleModalTask } = useProjects();
+    const { modalFormularioTarea, handleModalTask, showAlert, alert, submitTask } = useProjects();
+
+    const handleSubmit = e => {
+        e.preventDefault();
+
+        if ([name, description, priority].includes('')) {
+            showAlert({
+                msg: 'All the fields are required',
+                error: true
+            })
+            return;
+        }
+
+        submitTask({ name, description, priority });
+    }
+
+    const { msg } = alert;
 
     return (
         <Transition.Root show={modalFormularioTarea} as={Fragment}>
@@ -68,7 +86,11 @@ const ModalFormularioTarea = () => {
                                         Create Task
                                     </Dialog.Title>
 
-                                    <form className='my-10'>
+                                    {msg && <Alert alert={alert} />}
+
+                                    <form className='my-10'
+                                        onSubmit={handleSubmit}
+                                    >
                                         <div className='mb-5'>
                                             <label
                                                 className='text-gray-700 uppercase font-bold text-sm'
@@ -116,21 +138,24 @@ const ModalFormularioTarea = () => {
                                                 value={priority}
                                                 onChange={e => setPriority(e.target.value)}
                                             >
-                                                <option value="">-- Select --</option>
+                                                <option value="">-- Select --
 
-                                                { PRIORITY.map( option => (
+                                                </option>
+
+                                                {PRIORITY.map(option => (
                                                     <option key={option}>{option}</option>
-                                                )) }
+                                                ))}
                                             </select>
                                         </div>
 
-                                        <input 
+                                        <input
                                             type="submit"
                                             className='bg-sky-600 hover:bg-sky-700 w-full p-3 text-white
                                              uppercase font-bold cursor-pointer transition-colors rounded
                                              text-sm'
                                             value="Create Task"
-                                        
+                                            
+                                            
                                         />
 
                                     </form>
