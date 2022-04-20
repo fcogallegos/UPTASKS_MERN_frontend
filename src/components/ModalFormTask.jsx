@@ -18,7 +18,12 @@ const ModalFormularioTarea = () => {
     const params = useParams();
     //console.log(params);
 
-    const { modalFormularioTarea, handleModalTask, showAlert, alert, submitTask } = useProjects();
+    const { modalFormularioTarea, handleModalTask, showAlert, alert, submitTask,
+    task } = useProjects();
+
+    useEffect(() => {
+        console.log(task);
+    }, [task]);
 
     const handleSubmit = async e => {
         e.preventDefault();
