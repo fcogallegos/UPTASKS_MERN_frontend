@@ -20,7 +20,7 @@ const ModalFormularioTarea = () => {
 
     const { modalFormularioTarea, handleModalTask, showAlert, alert, submitTask } = useProjects();
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
 
         if ([name, description, dateDelivery, priority].includes('')) {
@@ -31,7 +31,12 @@ const ModalFormularioTarea = () => {
             return;
         }
 
-        submitTask({ name, description, dateDelivery, priority, project: params.id });
+        await submitTask({ name, description, dateDelivery, priority, project: params.id });
+        
+        setName('');
+        setDescription('');
+        setDateDelivery('');
+        setPriority('');
     }
 
     const { msg } = alert;
