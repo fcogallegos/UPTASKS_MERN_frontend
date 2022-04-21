@@ -234,7 +234,10 @@ const ProjectsProvider = ({ children }) => {
             const { data } = await clientAxios.put(`/tasks/${task.id}`, task, config);
             //console.log(data);
             
-            //TODO:  update the DOM
+            const projectUpdated = { ...project };
+            projectUpdated.tasks = projectUpdated.tasks.map( taskState => 
+                                                        taskState._id === data._id ? data : taskState)
+            setProject(projectUpdated);
 
             setAlert({});
             setModalFormularioTarea(false);
