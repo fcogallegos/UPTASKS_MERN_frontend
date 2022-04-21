@@ -10,9 +10,10 @@ const PRIORITY = ['Slow', 'Medium', 'Hight'];
 
 const ModalFormularioTarea = () => {
 
+    const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [dateDelivery, setDateDelivery] = useState('');
+    const [deliveryDate, setDeliveryDate] = useState('');
     const [priority, setPriority] = useState('');
     
     const params = useParams();
@@ -22,13 +23,25 @@ const ModalFormularioTarea = () => {
     task } = useProjects();
 
     useEffect(() => {
-        console.log(task);
+        if(task?._id){
+            setId(task._id)
+            setName(task.name);
+            setDescription(task.description);
+            setDeliveryDate(task.deliveryDate?.split('T')[0]);
+            setPriority(task.priority);
+            return;
+        }
+        setId('');
+        setName('');
+        setDescription('');
+        setDeliveryDate('');
+        setPriority('');
     }, [task]);
 
     const handleSubmit = async e => {
         e.preventDefault();
 
-        if ([name, description, dateDelivery, priority].includes('')) {
+        if ([name, description, deliveryDate, priority].includes('')) {
             showAlert({
                 msg: 'All the fields are required',
                 error: true
@@ -36,11 +49,11 @@ const ModalFormularioTarea = () => {
             return;
         }
 
-        await submitTask({ name, description, dateDelivery, priority, project: params.id });
+        await submitTask({ name, description, deliveryDate, priority, project: params.id });
         
         setName('');
         setDescription('');
-        setDateDelivery('');
+        setDeliveryDate('');
         setPriority('');
     }
 
@@ -98,7 +111,7 @@ const ModalFormularioTarea = () => {
                             <div className="sm:flex sm:items-start">
                                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                                     <Dialog.Title as="h3" className="text-lg leading-6 font-bold text-gray-900">
-                                        Create Task
+                                        { id ? 'Edit Task' : 'Create Task' }
                                     </Dialog.Title>
 
                                     {msg && <Alert alert={alert} />}
@@ -150,8 +163,8 @@ const ModalFormularioTarea = () => {
                                                 type="date"
                                                 id="date-delivery"
                                                 className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md'
-                                                value={dateDelivery}
-                                                onChange={e => setDateDelivery(e.target.value)}
+                                                value={deliveryDate}
+                                                onChange={e => setDeliveryDate(e.target.value)}
                                             />
                                         </div>
 
@@ -184,7 +197,7 @@ const ModalFormularioTarea = () => {
                                             className='bg-sky-600 hover:bg-sky-700 w-full p-3 text-white
                                              uppercase font-bold cursor-pointer transition-colors rounded
                                              text-sm'
-                                            value="Create Task"
+                                            value={ id ? 'Save Changes' : 'Create Task' }
                                             
                                             
                                         />
