@@ -67,15 +67,15 @@ const ProjectsProvider = ({ children }) => {
                 }
             }
 
-            const { data } = await clientAxios.put(`/projects/${project.id}`, project ,config);
+            const { data } = await clientAxios.put(`/projects/${project.id}`, project, config);
             console.log(data);
 
             //sync up the state
             const projectsUpdated = projects.map(
-                 projectState => projectState._id === data._id ? data : projectState ); 
+                projectState => projectState._id === data._id ? data : projectState);
 
-            setProjects(projectsUpdated);    
-            
+            setProjects(projectsUpdated);
+
             //show the alert
             setAlert({
                 msg: 'Project Updated Successfully',
@@ -158,11 +158,11 @@ const ProjectsProvider = ({ children }) => {
             }
 
             const { data } = await clientAxios.delete(`/projects/${id}`, config);
-            
+
             const projectsUpdated = projects.filter(
-                projectState => projectState._id !== id ); 
-            
-                setProjects(projectsUpdated);
+                projectState => projectState._id !== id);
+
+            setProjects(projectsUpdated);
 
             setAlert({
                 msg: data.msg,
@@ -184,25 +184,58 @@ const ProjectsProvider = ({ children }) => {
     }
 
     const submitTask = async task => {
+
+        if (task?.id) {
+           await editTask(task);
+        } else {
+           await createTask(task);
+        }
+    }
+    const createTask = async task => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
+                const config = {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+
+                const { data } = await clientAxios.post('/tasks', task, config);
+                //console.log(data);
+
+                //add the task to state
+                const projectUpdated = { ...project };
+                projectUpdated.tasks = [...project.tasks, data];
+
+                setProject(projectUpdated);
+                setAlert({});
+                setModalFormularioTarea(false);
+
+            } catch (error) {
+                console.log(error);
+            }
+    }
+
+    const editTask = async task => {
         try {
             const token = localStorage.getItem('token');
-            if (!token) return;
+                if (!token) return;
 
-            const config = {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
+                const config = {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    }
                 }
-            }
 
-            const { data } = await clientAxios.post('/tasks', task, config);
+            const { data } = await clientAxios.put(`/tasks/${task.id}`, task, config);
             //console.log(data);
+            
+            //TODO:  update the DOM
 
-            //add the task to state
-            const projectUpdated = { ...project };
-            projectUpdated.tasks = [ ...project.tasks, data ];
-
-            setProject(projectUpdated);
             setAlert({});
             setModalFormularioTarea(false);
             
@@ -215,7 +248,7 @@ const ProjectsProvider = ({ children }) => {
         setTask(task);
         setModalFormularioTarea(true);
     }
- 
+
     return (
         <ProjectsContext.Provider
             value={{
