@@ -187,62 +187,62 @@ const ProjectsProvider = ({ children }) => {
     const submitTask = async task => {
 
         if (task?.id) {
-           await editTask(task);
+            await editTask(task);
         } else {
-           await createTask(task);
+            await createTask(task);
         }
     }
     const createTask = async task => {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) return;
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
 
-                const config = {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`
-                    }
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
                 }
-
-                const { data } = await clientAxios.post('/tasks', task, config);
-                //console.log(data);
-
-                //add the task to state
-                const projectUpdated = { ...project };
-                projectUpdated.tasks = [...project.tasks, data];
-
-                setProject(projectUpdated);
-                setAlert({});
-                setModalFormularioTarea(false);
-
-            } catch (error) {
-                console.log(error);
             }
+
+            const { data } = await clientAxios.post('/tasks', task, config);
+            //console.log(data);
+
+            //add the task to state
+            const projectUpdated = { ...project };
+            projectUpdated.tasks = [...project.tasks, data];
+
+            setProject(projectUpdated);
+            setAlert({});
+            setModalFormularioTarea(false);
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const editTask = async task => {
         try {
             const token = localStorage.getItem('token');
-                if (!token) return;
+            if (!token) return;
 
-                const config = {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`
-                    }
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
                 }
+            }
 
             const { data } = await clientAxios.put(`/tasks/${task.id}`, task, config);
             //console.log(data);
-            
+
             const projectUpdated = { ...project };
-            projectUpdated.tasks = projectUpdated.tasks.map( taskState => 
-                                                        taskState._id === data._id ? data : taskState)
+            projectUpdated.tasks = projectUpdated.tasks.map(taskState =>
+                taskState._id === data._id ? data : taskState)
             setProject(projectUpdated);
 
             setAlert({});
             setModalFormularioTarea(false);
-            
+
         } catch (error) {
             console.log(error);
         }
@@ -256,6 +256,38 @@ const ProjectsProvider = ({ children }) => {
     const handleModalDeleteTask = task => {
         setTask(task);
         setModalDeleteTask(!modalDeleteTask);
+    }
+
+    const deleteTask = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const { data } = await clientAxios.delete(`/tasks/${task._id}`, config);
+            setAlert({
+                msg: data.msg,
+                error: false
+            });
+
+            const projectUpdated = { ...project };
+            projectUpdated.tasks = projectUpdated.tasks.filter(taskState => taskState._id !== task._id);
+
+            setProject(projectUpdated);
+            setModalDeleteTask(false);
+            setTask({});
+            setTimeout(() => {
+                setAlert({});
+            }, 3000);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -275,7 +307,8 @@ const ProjectsProvider = ({ children }) => {
                 handleModalEditTask,
                 task,
                 modalDeleteTask,
-                handleModalDeleteTask
+                handleModalDeleteTask,
+                deleteTask
             }}
         >
             {children}
