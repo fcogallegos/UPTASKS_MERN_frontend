@@ -1,10 +1,9 @@
 import { dateFormat } from "../helpers/dateFormat";
 import useProjects from "../hooks/useProjects";
 
-
 const Task = ({ task }) => {
 
-    const { handleModalEditTask } = useProjects();
+    const { handleModalEditTask, handleModalDeleteTask } = useProjects();
 
     const { name, description, priority, status, deliveryDate, _id } = task;
 
@@ -43,6 +42,7 @@ const Task = ({ task }) => {
                     className="bg-red-600 px-4 py-3
                                 text-white uppercase font-bold
                                 text-sm rounded-lg"
+                    onClick={ () => handleModalDeleteTask(task) }
                 >Delete</button>
             </div>
         </div>

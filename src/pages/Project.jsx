@@ -5,6 +5,7 @@ import useProjects from '../hooks/useProjects';
 import Task from '../components/Task';
 
 import ModalFormTask from '../components/ModalFormTask';
+import ModalDeleteTask from '../components/ModalDeleteTask';
 
 const Project = () => {
 
@@ -66,6 +67,7 @@ const Project = () => {
       </div>
 
       <ModalFormTask />
+      <ModalDeleteTask />
     </>
   )
 
