@@ -7,6 +7,7 @@ import Collaborator from '../components/Collaborator';
 
 import ModalFormTask from '../components/ModalFormTask';
 import ModalDeleteTask from '../components/ModalDeleteTask';
+import ModalDeleteCollaborator from '../components/ModalDeleteCollaborator';
 import Alert from '../components/Alert';
 
 const Project = () => {
@@ -24,7 +25,7 @@ const Project = () => {
 
   const { name } = project;
 
-  console.log(project);
+  //console.log(project);
 
   if (loading) return 'Loading...';
 
@@ -101,6 +102,7 @@ const Project = () => {
          
       <ModalFormTask />
       <ModalDeleteTask />
+      <ModalDeleteCollaborator />
     </>
   )
 
