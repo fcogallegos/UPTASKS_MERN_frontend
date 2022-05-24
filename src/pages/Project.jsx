@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import useProjects from '../hooks/useProjects';
+import useAdmin from '../hooks/useAdmin';
 
 import Task from '../components/Task';
 import Collaborator from '../components/Collaborator';
@@ -17,15 +18,14 @@ const Project = () => {
 
   const { getProject, project, loading, handleModalTask, alert } = useProjects();
 
+  const admin = useAdmin();
+
+
   useEffect(() => {
     getProject(params.id);
   }, []);
 
-  //console.log(project);
-
   const { name } = project;
-
-  //console.log(project);
 
   if (loading) return 'Loading...';
 
@@ -37,19 +37,21 @@ const Project = () => {
       <div className='flex justify-between'>
         <h1 className='font-black text-4xl'>{name}</h1>
 
-        <div className='flex items-center gap-2 text-gray-400 hover:text-black'>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-          </svg>
-
-          <Link
-            to={`/projects/edit/${params.id}`}
-            className="uppercase font-bold"
-          >Edit</Link>
-
-        </div>
+        { admin && (
+          <div className='flex items-center gap-2 text-gray-400 hover:text-black'>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          
+            <Link
+              to={`/projects/edit/${params.id}`}
+              className="uppercase font-bold"
+            >Edit</Link>
+          </div>
+        )}
       </div>
 
+    { admin && (
       <button
         onClick={ handleModalTask }
         className='text-sm px-5 py-3 w-full md:w-auto rounded-lg uppercase font-bold
@@ -60,7 +62,7 @@ const Project = () => {
         </svg>
         New Task
       </button>
-
+    )}
       <p className='font-bold text-xl mt-10'>Project Tasks</p>
 
       <div className='flex justify-center'>
@@ -79,7 +81,9 @@ const Project = () => {
             )) : 
             <p className='text-center my-5 p-10'>There are not tasks in this project</p> }
       </div>
-
+    
+    { admin && (
+      <>
       <div className='flex items-center justify-between mt-10'>
               <p className='font-bold text-xl'>Collaborators</p>
               <Link
@@ -87,7 +91,7 @@ const Project = () => {
                   className="text-gray-400 hover:text-black uppercase font-bold"
               >Add</Link>
       </div>
-
+    
       <div className='bg-white shadow mt-10 rounded-lg'>
           { project.collaborators?.length ? 
             project.collaborators?.map(collaborator => (
@@ -99,7 +103,8 @@ const Project = () => {
             )) : 
             <p className='text-center my-5 p-10'>There are not collaborators in this project</p> }
       </div>
-         
+      </>
+    )}     
       <ModalFormTask />
       <ModalDeleteTask />
       <ModalDeleteCollaborator />

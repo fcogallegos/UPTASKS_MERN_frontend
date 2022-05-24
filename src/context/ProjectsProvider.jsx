@@ -141,8 +141,8 @@ const ProjectsProvider = ({ children }) => {
 
             const { data } = await clientAxios.get(`/projects/${id}`, config);
             setProject(data);
-
-
+            
+            setAlert({});
         } catch (error) {
             setAlert({
                 msg: error.response.data.msg,
@@ -185,6 +185,8 @@ const ProjectsProvider = ({ children }) => {
             console.log(error);
         }
     }
+
+    
 
     const handleModalTask = () => {
         setModalFormularioTarea(!modalFormularioTarea);
@@ -345,6 +347,10 @@ const ProjectsProvider = ({ children }) => {
                 error: false
             })
             setCollaborator({});
+
+            setTimeout(() => {
+                setAlert({})
+            }, 3000);
         } catch (error) {
             setAlert({
                 msg: error.response.data.msg,
@@ -385,6 +391,10 @@ const ProjectsProvider = ({ children }) => {
 
             setCollaborator({});
             setModalDeleteCollaborator(false);
+
+            setTimeout(() => {
+                setAlert({})
+            }, 3000);
 
         } catch (error) {
             console.log(error.response);            
