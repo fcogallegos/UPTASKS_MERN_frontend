@@ -10,7 +10,7 @@ const PreviewProject = ({ project }) => {
     //console.log(name);
 
     return (
-        <div className='border-b p-5 flex justify-between'>
+        <div className='border-b p-5 flex flex-col md:flex-row justify-between'>
 
 
             <div className='flex items-center gap-2'>

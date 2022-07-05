@@ -12,14 +12,15 @@ const Task = ({ task }) => {
 
     return (
         <div className="border-b p-5 flex justify-between items-center">
-            <div>
+            <div className="flex flex-col items-start">
                 <p className="mb-1 text-xl">{name}</p>
                 <p className="mb-1 text-sm text-gray-500 uppercase">{description}</p>
                 <p className="mb-1 text-sm">{ dateFormat(deliveryDate) }</p>
                 <p className="mb-1 text-gray-600">Priority: {priority}</p>
+                { status && <p className="text-xs bg-green-600 uppercase p-1 rounded-lg text-white">Completed by: { task.completed.name } </p> }
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col lg:flex-row gap-2">
                 { admin && (
                     <button
                         className="bg-indigo-600 px-4 py-3
