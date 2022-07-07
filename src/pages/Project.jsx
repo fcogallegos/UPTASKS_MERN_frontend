@@ -19,7 +19,8 @@ const Project = () => {
   const params = useParams();
   //console.log(params);
 
-  const { getProject, project, loading, handleModalTask, alert, submitTasksProject, deleteTaskProject } = useProjects();
+  const { getProject, project, loading, handleModalTask, alert, 
+    submitTasksProject, deleteTaskProject, updateTaskProject } = useProjects();
 
   const admin = useAdmin();
 
@@ -45,6 +46,12 @@ const Project = () => {
         deleteTaskProject(taskDeleted)
       }
     })
+
+    socket.on('task updated', taskUpdated => {
+      if(taskUpdated.project._id === project._id) {
+        updateTaskProject(taskUpdated)
+      }
+    }) 
   });
 
 
