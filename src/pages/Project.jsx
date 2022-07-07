@@ -10,13 +10,16 @@ import ModalFormTask from '../components/ModalFormTask';
 import ModalDeleteTask from '../components/ModalDeleteTask';
 import ModalDeleteCollaborator from '../components/ModalDeleteCollaborator';
 import Alert from '../components/Alert';
+import io from 'socket.io-client';
+
+let socket;
 
 const Project = () => {
 
   const params = useParams();
   //console.log(params);
 
-  const { getProject, project, loading, handleModalTask, alert } = useProjects();
+  const { getProject, project, loading, handleModalTask, alert, submitTasksProject, deleteTaskProject } = useProjects();
 
   const admin = useAdmin();
 
@@ -25,12 +28,29 @@ const Project = () => {
     getProject(params.id);
   }, []);
 
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+    socket.emit('open project', params.id);
+  }, []);
+
+  useEffect(() => {
+    socket.on('task added', newTask => {
+      if(newTask.project === project._id) { 
+        submitTasksProject(newTask)
+      }
+    })
+
+    socket.on('task deleted', taskDeleted => {
+      if(taskDeleted.project === project._id) {
+        deleteTaskProject(taskDeleted)
+      }
+    })
+  });
+
+
   const { name } = project;
-
-  console.log(project);
-
+  //console.log(project);
   if (loading) return 'Loading...';
-
   const { msg } = alert;
 
   return (
