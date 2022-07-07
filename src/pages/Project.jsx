@@ -20,7 +20,7 @@ const Project = () => {
   //console.log(params);
 
   const { getProject, project, loading, handleModalTask, alert, 
-    submitTasksProject, deleteTaskProject, updateTaskProject } = useProjects();
+    submitTasksProject, deleteTaskProject, updateTaskProject, changeStatusTask } = useProjects();
 
   const admin = useAdmin();
 
@@ -52,6 +52,12 @@ const Project = () => {
         updateTaskProject(taskUpdated)
       }
     }) 
+
+    socket.on('new status', newStatusTask => {
+      if( newStatusTask.project._id === project._id ) {
+        changeStatusTask(newStatusTask)
+      }
+    })
   });
 
 
